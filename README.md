@@ -23,7 +23,7 @@ An Amazon Machine Image (AMI) defines the software configuration (operating syst
 ### Choose your Instance Type
 The instance type you select determines the resources you provide your AMI to run with.  The two main features are the number of CPUs and the memory type.  Different computational tasks will have very different needs and require different Instance Types.  The default `t2.micro` is sufficient for this tutorial.
 
-![InstanceType](https://user-images.githubusercontent.com/21269613/110986310-5c900080-8322-11eb-9873-0ffcbd657f07.png | width=100)
+![InstanceType](https://user-images.githubusercontent.com/21269613/110986310-5c900080-8322-11eb-9873-0ffcbd657f07.png)
 
 - Select the blue `Review and Launch` button on the bottom right of the screen
 
