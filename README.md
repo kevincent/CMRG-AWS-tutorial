@@ -33,7 +33,7 @@ The instance type is also the primary determinant also of the ec2 instance cost 
 ### Review the EC2 instance options and Launch the Instance
 The next screen will show all of the options selected for the ec2 instance we are about to launch.  There were a number of options we skipped over such as the amount of hard disk storage to provide the instance and whether or not to use hyperthreading. Look over the options on this page to get a feel for the available options.  Many of the options require AWS knowledge that is beyond the scope of this introductory tutorial.
 
-- Select the blue `Launch` button to launch the instance.
+- Select the blue `Launch` button to launch the instance. :tada:
 
 ### Create a Key Pair
 Not so fast, we still need to create a key pair so we are able to access the instance later.
@@ -107,16 +107,43 @@ To run the python script, we need to `ssh` back into the ec2 instance and run it
 #### Running a script on an ec2 instance when disconnected
 The model we have selected for this example runs very quickly, but that is unlikely to be the case if you're offloading your heavy computational tasks to AWS.  If you begin running a task through the terminal (e.g. running a python script or running a simulation on software like Continuity or Browndye), then exit from your ssh connection (or let your computer go to sleep), the process running your task will terminate and your job will not finish running.  You need to find a way to keep your remote SSH process running after disconnection.  You could disown the process using `&` or use one of the command line programs that enable this (tmux, screen, nohup).  I typically use tmux (short for terminal multiplexer) but use whichever method works best for you. I never remember the syntax so I have have a cheatsheet of the useful commands (e.g. https://tmuxcheatsheet.com/).
 
+- Start a new tmux session
+``` tmux new -s mysession```
 
+- run your code as normal in the tmux terminal
+```python3 runAPmodel.py```
+
+- Detatch from the session
+```Ctrl+b d```
+
+- Attach to a session
+```tmux a``` or ```tmux a -t mysession```
 
 ### Copy the result back using SCP
 To retrieve the output file, we reverse the source and destination of the `scp` command.
 
 ```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/output.txt local/path/.```
 
-The file is now back on your local machine for further analysis, visualization, etc.
+The file is now back on your local machine for further analysis, visualization, etc. :tada:
 
 ### Running a script stored in an S3 bucket
+For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
+
+## Saving an AMI
+If your work requires custom software (e.g. Browndye, Continuity, Cufflinks, etc.), you can instal the software on an instance through the terminal when you have ssh access. Installing the proper software can be time consuming and/or challenging. It would be wasteful to re-install the software every time you wanted to use AWS.  One solution to this is to save the state of your EC2 instance as an AMI after installing the software.  Future instances can be spun up using that AMI.
+
+To create an AMI from an ec2 instance:
+- Select the white `Actions` button on the Instances toolbar 
+- `Actions` -> `Images and templates` -> `Create image`
+
+![CreateAMI](https://user-images.githubusercontent.com/21269613/111049154-507b7000-8402-11eb-8969-f888a776d8d7.png)
+Remember, AMIs are region specific in AWS.
+
+Saving a static AMI can cause problems because the OS no longer recieves updates, and some services (e.g. AWS ParallelCluster) might not run with an out of date AMI.  To avoid this, you could deploy a docker container using AWS Elastic Container Service (https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/).  Another AWS solution might be to use EC2 Image Builder, but I have never used Image Builder myself.
+
+*Update the tutorial if you give ECS or Image Builder a try*
 
 ## AWS ParallelCluster
 
+
+## Deploying a Docker Container
