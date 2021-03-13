@@ -13,7 +13,7 @@ Amazon Elastic Compute Cloud (Amazon EC2) provides scalable computing capacity i
 
 - Select the orange `Launch instance` button.
 
-![Launch Instance](https://user-images.githubusercontent.com/21269613/110983979-58aeaf00-831f-11eb-8636-6506c6e84c33.png)
+<img src="https://user-images.githubusercontent.com/21269613/110983979-58aeaf00-831f-11eb-8636-6506c6e84c33.png" align="center" alt="SSHclientInfo" width="700"/>
 
 ### Select AMI
 An Amazon Machine Image (AMI) defines the software configuration (operating system, application server, and applications) that your ec2 instance will run.  If you have specific software you want to run, you may install that software on an ec2 instance and save that installation as an AMI to retrieve for later use.  For this tutorial, the default `Amazon Linux 2 AMI` is sufficient.  
@@ -67,7 +67,7 @@ Your ec2 instance is now running.  Hooray!  You should now see a list of all of 
 - Copy the bottom line with the `ssh` command (` ssh -i "kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com`) 
 
 ### Access your EC2 instance through an SSH client
-- Launch your SSH client.  For a Mac, this would just be the Terminal.  On Windows, this would be a program like PuTTY
+- Launch your SSH client.  For a Mac, this would just be the Terminal.  On Windows, this would be a program like PuTTY (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html)
 
 - Paste the `ssh` command from the `SSH client` tab in the AWS console.  Be sure to provide the full path to your key.
 
@@ -79,4 +79,27 @@ The specific numerical address will be different for every instance.  Additional
 
 ![SSHaccess](https://user-images.githubusercontent.com/21269613/111039193-a25fce00-83e1-11eb-98f5-eba4e1ee7d2d.png)
 
-If your terminal appears as above, you have successfully logged in to the ec2 instance over SSH!
+If your terminal appears as above, you have successfully logged in to the ec2 instance over SSH.
+
+- To end the SSH connection enter `exit` in the terminal.
+
+## Execute a python script on an EC2 instance
+For the next portion of the tutorial, we will copy a file to the ec2 instance that you spun up, run the python script, and copy the result back to your local machine.
+
+- Download the file to your local machine.
+
+### Use SCP to copy a file to the ec2 instance
+
+Basic `scp` syntax using a key pair is shown below:
+
+```scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
+
+For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 isntance.  We will just place the file in the home directory (`~/`).
+```scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
+
+### Run the python script on the ec2 instance
+
+### Copy the result back using SCP
+
+### Running a script stored in an S3 bucket
+
