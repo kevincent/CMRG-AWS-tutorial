@@ -94,7 +94,7 @@ Basic `scp` syntax using a key pair is shown below:
 
 ```scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
 
-For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 isntance.  We will just place the file in the home directory (`~/`).
+For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`~/`).
 ```scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
 
 ### Run the python script on the ec2 instance
@@ -130,7 +130,7 @@ The file is now back on your local machine for further analysis, visualization, 
 For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
 
 ## Saving an AMI
-If your work requires custom software (e.g. Browndye, Continuity, Cufflinks, etc.), you can instal the software on an instance through the terminal when you have ssh access. Installing the proper software can be time consuming and/or challenging. It would be wasteful to re-install the software every time you wanted to use AWS.  One solution to this is to save the state of your EC2 instance as an AMI after installing the software.  Future instances can be spun up using that AMI.
+If your work requires custom software (e.g. Browndye, Continuity, Cufflinks, etc.), you can instal the software on an ec2 instance through the terminal when you have ssh access. Installing the proper software can be time consuming and/or challenging. It would be tedious to re-install the software every time you wanted to use AWS.  One solution to this is to save the state of your EC2 instance as an AMI after installing the software.  Future instances can be spun up using that AMI.
 
 To create an AMI from an ec2 instance:
 - Select the white `Actions` button on the Instances toolbar 
@@ -139,11 +139,15 @@ To create an AMI from an ec2 instance:
 ![CreateAMI](https://user-images.githubusercontent.com/21269613/111049154-507b7000-8402-11eb-8969-f888a776d8d7.png)
 Remember, AMIs are region specific in AWS.
 
-Saving a static AMI can cause problems because the OS no longer recieves updates, and some services (e.g. AWS ParallelCluster) might not run with an out of date AMI.  To avoid this, you could deploy a docker container using AWS Elastic Container Service (https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/).  Another AWS solution might be to use EC2 Image Builder, but I have never used Image Builder myself.
+Saving a static AMI can cause problems because the OS no longer receives updates, and some services (e.g. AWS ParallelCluster) might not run with an out of date AMI.  To avoid this, you could deploy a docker container using AWS Elastic Container Service (https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/).  Another AWS solution might be to use EC2 Image Builder, but I have never used Image Builder myself.
 
 *Update the tutorial if you give ECS or Image Builder a try*
 
 ## AWS ParallelCluster
+If you need to run many simulations or very computationally expensive simulations, AWS ParallelCluster can provide an HPC enviroment. ParallelCluster allows you to submit jobs to a scheduler (e.g. slurm, aws batch | sge support will be depricated).  You can spin up as many instances as needed to farm out large batches of jobs.  ParallelCluster requires AWS CLI which is not currently available through the UCSD SSO login, but this should be requested.  A explaination of ParallelCluster is beyond the scope of this tutorial, but below are a few links to get you started.
 
-
-## Deploying a Docker Container
+- https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop.html
+- https://docs.aws.amazon.com/parallelcluster/latest/ug/what-is-aws-parallelcluster.html
+- https://aws.amazon.com/hpc/parallelcluster/
+- https://www.youtube.com/watch?v=UnQM7cX2y0E
+- https://jiaweizhuang.github.io/blog/aws-hpc-guide/#pcluster-ami
