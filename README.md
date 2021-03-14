@@ -71,7 +71,7 @@ Your ec2 instance is now running.  Hooray!  You should now see a list of all of 
 
 - Paste the `ssh` command from the `SSH client` tab in the AWS console.  Be sure to provide the full path to your key.
 
-```ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
+```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
 
 The specific numerical address will be different for every instance.  Additionally the user name (`ec2-user`) may be incorrect if you are loading a custom AMI.  For example, you may need to edit it to `ubuntu` or other some other generic username.
 
@@ -92,32 +92,32 @@ For the next portion of the tutorial, we will copy a file to the ec2 instance th
 
 Basic `scp` syntax using a key pair is shown below:
 
-```scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
+```$ scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
 
 For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`~/`).
-```scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
+```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
 
 ### Run the python script on the ec2 instance
 To run the python script, we need to `ssh` back into the ec2 instance and run it from the command line.
 
-```ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
+```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
 
-```python3 runAPmodel.py```
+```$ python3 runAPmodel.py```
 
 #### Running a script on an ec2 instance when disconnected
 The model we have selected for this example runs very quickly, but that is unlikely to be the case if you're offloading your heavy computational tasks to AWS.  If you begin running a task through the terminal (e.g. running a python script or running a simulation on software like Continuity or Browndye), then exit from your ssh connection (or let your computer go to sleep), the process running your task will terminate and your job will not finish running.  You need to find a way to keep your remote SSH process running after disconnection.  You could disown the process using `&` or use one of the command line programs that enable this (tmux, screen, nohup).  I typically use tmux (short for terminal multiplexer) but use whichever method works best for you. I never remember the syntax so I have have a cheatsheet of the useful commands (e.g. https://tmuxcheatsheet.com/).
 
 - Start a new tmux session
-``` tmux new -s mysession```
+```$ tmux new -s mysession```
 
 - run your code as normal in the tmux terminal
-```python3 runAPmodel.py```
+```$ python3 runAPmodel.py```
 
 - Detatch from the session
 ```Ctrl+b d```
 
 - Attach to a session
-```tmux a``` or ```tmux a -t mysession```
+```$ tmux a``` or ```$ tmux a -t mysession```
 
 ### Copy the result back using SCP
 To retrieve the output file, we reverse the source and destination of the `scp` command.
