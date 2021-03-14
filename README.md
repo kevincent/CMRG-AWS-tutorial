@@ -144,7 +144,7 @@ Saving a static AMI can cause problems because the OS no longer receives updates
 *Update the tutorial if you give ECS or Image Builder a try*
 
 ## AWS ParallelCluster
-If you need to run many simulations or very computationally expensive simulations, AWS ParallelCluster can provide an HPC enviroment. ParallelCluster allows you to submit jobs to a scheduler (e.g. slurm, aws batch | sge support will be depricated).  You can spin up as many instances as needed to farm out large batches of jobs.  ParallelCluster requires AWS CLI which is not currently available through the UCSD SSO login, but this should be requested.  A explaination of ParallelCluster is beyond the scope of this tutorial, but below are a few links to get you started.
+If you need to run many simulations or very computationally expensive simulations, AWS ParallelCluster can provide an HPC enviroment. ParallelCluster allows you to submit jobs to a scheduler (e.g. slurm, aws batch | sge support will be depricated).  ParallelCluster will spin up as many instances as needed to farm out large batches of jobs.  ParallelCluster requires AWS CLI which is not currently available through the UCSD SSO login, but this should be requested.  A explaination of ParallelCluster is beyond the scope of this tutorial, but below are a few links to get you started.
 
 - https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop.html
 - https://docs.aws.amazon.com/parallelcluster/latest/ug/what-is-aws-parallelcluster.html
