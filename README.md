@@ -95,6 +95,7 @@ Basic `scp` syntax using a key pair is shown below:
 ```$ scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
 
 For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`~/`).
+
 ```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
 
 ### Run the python script on the ec2 instance
