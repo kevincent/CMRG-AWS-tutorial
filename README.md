@@ -64,14 +64,14 @@ Your ec2 instance is now running.  Hooray!  You should now see a list of all of 
 
 <img src="https://user-images.githubusercontent.com/21269613/110988775-d70e4f80-8325-11eb-8d1c-2a40e29d08a1.png" align="center" alt="SSHclientInfo" width="700"/>
 
-- Copy the bottom line with the `ssh` command (`ssh -i "kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com`) 
+- Copy the bottom line with the `ssh` command (`ssh -i "kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com`) 
 
 ### Access your EC2 instance through an SSH client
 - Launch your SSH client.  For a Mac, this would just be the Terminal.  On Windows, this would be a program like PuTTY (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html)
 
 - Paste the `ssh` command from the `SSH client` tab in the AWS console.  Be sure to provide the full path to your key.
 
-```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
+```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com```
 
 The specific numerical address will be different for every instance.  Additionally the user name (`ec2-user`) may be incorrect if you are loading a custom AMI.  For example, you may need to edit it to `ubuntu` or other some other generic username.
 
@@ -101,16 +101,16 @@ Next we will copy the two python files to the ec2 instance using `scp`.  Basic `
 
 For this specific usage, we are copying the `runAPmodel.py` and `ohara_model.py` files from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`.`).
 
-```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com:.```
+```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/runAPmodel.py ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com:.```
 
 You can copy both files at once using the wildcard (`*`) charachter
 
-```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/*.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com:~/.```
+```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/*.py ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com:~/.```
 
 ### Run the python script on the ec2 instance
 To run the python script, we need to `ssh` back into the ec2 instance and run it from the command line.
 
-```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
+```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com```
 
 ### Install Python 3 and dependancies on ec2 instance
 First we need to install Python 3 onto the ec2 instance.  Amazon Linux 2 uses the `yum` package manager.  Use 
@@ -155,11 +155,11 @@ Before we can retrieve the figures created from the simulation, we must exit the
 
 To retrieve the output file, we reverse the source and destination of the `scp` command.  First, end the `ssh` connection using 
 
-```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:AllBeats.png local/path/.```
+```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com/:AllBeats.png local/path/.```
 
 If you want to copy multiple files at a time, you can again use the wildcard charachter (`*`).  However, when using the wildcard with a remote host, you need to prefix it with a forward slash (`\`).
 
-```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:\*.png local/path/.```
+```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com/:\*.png local/path/.```
 
 The files are now back on your local machine for further analysis, visualization, etc. :tada:
 
