@@ -129,7 +129,12 @@ The file is now back on your local machine for further analysis, visualization, 
 ### Running a script stored in an S3 bucket
 For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
 
-## Saving an AMI
+## Terminating an EC2 instance
+The final step is to shut down or terminate the ec2 instance.  
+
+Steps to shut down an EC2 instance
+
+### Saving an AMI
 If your work requires custom software (e.g. Browndye, Continuity, Cufflinks, etc.), you can instal the software on an ec2 instance through the terminal when you have ssh access. Installing the proper software can be time consuming and/or challenging. It would be tedious to re-install the software every time you wanted to use AWS.  One solution to this is to save the state of your EC2 instance as an AMI after installing the software.  Future instances can be spun up using that AMI.
 
 To create an AMI from an ec2 instance:
@@ -151,3 +156,8 @@ If you need to run many simulations or very computationally expensive simulation
 - https://aws.amazon.com/hpc/parallelcluster/
 - https://www.youtube.com/watch?v=UnQM7cX2y0E
 - https://jiaweizhuang.github.io/blog/aws-hpc-guide/#pcluster-ami
+
+## Other AWS Links
+
+https://github.com/kevincent/Continuity_w_AWS
+The above repo hosts a Jupyter Notebook capable of running Continuity using AWS CLI.  This requires CLI credentials not currently available through UCSD's SSO console.  
