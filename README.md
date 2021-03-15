@@ -103,7 +103,7 @@ For this specific usage, we are copying the `runAPmodel.py` and `ohara_model.py`
 
 ```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/runAPmodel.py ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com:.```
 
-You can copy both files at once using the wildcard (`*`) charachter
+You can copy both files at once using the wildcard (`*`) character
 
 ```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/*.py ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com:~/.```
 
@@ -157,7 +157,7 @@ To retrieve the output file, we reverse the source and destination of the `scp` 
 
 ```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com/:AllBeats.png local/path/.```
 
-If you want to copy multiple files at a time, you can again use the wildcard charachter (`*`).  However, when using the wildcard with a remote host, you need to prefix it with a forward slash (`\`).
+If you want to copy multiple files at a time, you can again use the wildcard character (`*`).  However, when using the wildcard with a remote host, you need to prefix it with a forward slash (`\`).
 
 ```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com/:\*.png local/path/.```
 
