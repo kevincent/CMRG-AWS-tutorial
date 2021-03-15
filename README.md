@@ -130,9 +130,20 @@ The file is now back on your local machine for further analysis, visualization, 
 For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
 
 ## Terminating an EC2 instance
-The final step is to shut down or terminate the ec2 instance.  
+The final step is to shut down or terminate the ec2 instance. *Terminating the instance is very important as you will keep incuring charges until your instance is terminated!* Remember to be extra careful to terminate an instance if it is using an expensive instance type.
 
-Steps to shut down an EC2 instance
+When you terminate an instance, **all of the data is deleted** so be sure to copy your data off the instance (using `scp`) or store data you need to access again into an S3 bucket.
+
+- Press the white `Instance state` button on the Instances toolbar
+- Select `Terminate instance` option in the menu (see below)
+- Press the orange `Terminate` button
+
+![TerminateInstance](https://user-images.githubusercontent.com/21269613/111191060-e9ca9380-8574-11eb-9509-88c24800eeb3.png)
+
+### Stoping an EC2 instance
+As you can see from the menu above, terminating the instance isn't the only option.  You could also select `Stop instance`.  When you stop an instance, you dissociate the volume from the compute resource.  This keep anything that was saved to the hard disk but loses anything that was stored in temporary memory.  When an instance is stopped, you are no longer charged the hourly charge for the instance type, but you still pay the monthly charge for the memory.  You can see stopped volumes by selecting the `Volumes` option under `Elastic Block Store` on the lefthand navigational panel in the EC2 console. 
+
+Stopping an instance can be useful in narrow circumstances - say you have a lot of data or software on an instance, but you don't need it for a short period of time (days).  That will prevent the hourly instance type charges from racking up.
 
 ### Saving an AMI
 If your work requires custom software (e.g. Browndye, Continuity, Cufflinks, etc.), you can instal the software on an ec2 instance through the terminal when you have ssh access. Installing the proper software can be time consuming and/or challenging. It would be tedious to re-install the software every time you wanted to use AWS.  One solution to this is to save the state of your EC2 instance as an AMI after installing the software.  Future instances can be spun up using that AMI.
@@ -160,4 +171,9 @@ If you need to run many simulations or very computationally expensive simulation
 ## Other AWS Links
 
 https://github.com/kevincent/Continuity_w_AWS
+
 The above repo hosts a Jupyter Notebook capable of running Continuity using AWS CLI.  This requires CLI credentials not currently available through UCSD's SSO console.  
+
+https://www.coursera.org/learn/aws-cloud-practitioner-essentials
+
+If you want a strong overview of all of AWS' services and be able to speak the language of AWS there is a nice free Coursera course. 
