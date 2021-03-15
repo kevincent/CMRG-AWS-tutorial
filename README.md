@@ -52,7 +52,7 @@ Not so fast, we still need to create a key pair so we are able to access the ins
 - Remember the key path and name.
 
 ## Access your EC2 Instance
-- Select the blue `View Instances` button at the bottom of the splash screen
+- Select the blue `View instances` button at the bottom of the splash screen
 
 Your ec2 instance is now running.  Hooray!  You should now see a list of all of the instances in the region you launched your instance in.  You might find it useful to tag your instance with a name by clicking to edit the blank `Name` column (see below).
 
@@ -84,26 +84,54 @@ If your terminal appears as above, you have successfully logged in to the ec2 in
 - To end the SSH connection enter `exit` in the terminal.
 
 ## Execute a python script on an EC2 instance
-For the next portion of the tutorial, we will copy a file to the ec2 instance that you spun up, run the python script, and copy the result back to your local machine.
+For the next portion of the tutorial, we will copy two files to the ec2 instance that you spun up, run the python script, and copy the result back to your local machine.
 
-- Download the file to your local machine.
+- Download the code for this repository to your local machine by clicking the green `Code` button on the top right of the repository homepage.
+- Select the `Download Zip` option
+
+![DownloadZip](https://user-images.githubusercontent.com/21269613/111205499-8a747f80-8584-11eb-9e00-088bb9946df9.png)
+
+- Unzip the file on your local machine and take note of its path
 
 ### Use SCP to copy a file to the ec2 instance
 
-Basic `scp` syntax using a key pair is shown below:
+Next we will copy the two python files to the ec2 instance using `scp`.  Basic `scp` syntax using a key pair is shown below:
 
 ```$ scp -i "path/to/key/kpv-aws-key.pem" [user@]SRC_HOST:]file1 [user@]DEST_HOST:]file2```
 
-For this specific usage, we are copying the `runAPmodel.py` file from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`~/`).
+For this specific usage, we are copying the `runAPmodel.py` and `ohara_model.py` files from our local computer to the `ec2-user` account on the ec2 instance.  We will just place the file in the home directory (`.`).
 
-```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/file/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/.```
+```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/runAPmodel.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com:.```
+
+You can copy both files at once using the wildcard (`*`) charachter
+
+```$ scp -i "path/to/key/kpv-aws-key.pem" path/to/files/*.py ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com:~/.```
 
 ### Run the python script on the ec2 instance
 To run the python script, we need to `ssh` back into the ec2 instance and run it from the command line.
 
 ```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com```
 
-```$ python3 runAPmodel.py```
+### Install Python 3 and dependancies on ec2 instance
+First we need to install Python 3 onto the ec2 instance.  Amazon Linux 2 uses the `yum` package manager.  Use 
+
+```$  sudo yum install python37```
+```$  pip3 install numpy --user```
+```$  pip3 install scipy --user```
+```$  pip3 install matplotlib --user```
+
+### Run the python script
+Now we are ready to run the action potential model.  This is a simulation of the cardiac action potential using the O'Hara-Rudy model (https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002061).  The simulation is very simple - 10 paced beats at 550ms cycle length.
+
+- Run the simulation with Python 3
+
+```$  python3 runAPmodel.py```
+
+The simulation will print some information to the screen. If the model has run successfully, you will see new files in your directory.  List the files using the `ls` command or `ls -lhrt` for more organized output.
+
+![runScript](https://user-images.githubusercontent.com/21269613/111209635-7c752d80-8589-11eb-838f-6d03c2cd0bd1.png)
+
+We see the two original python files and some new files.  `LastBeat.png` and `AllBeats.png` are plots showing the results of the simulation.  `State_var_final.npy` is a binary numpy file containing the final vector of state variables in the model.
 
 #### Running a script on an ec2 instance when disconnected
 The model we have selected for this example runs very quickly, but that is unlikely to be the case if you're offloading your heavy computational tasks to AWS.  If you begin running a task through the terminal (e.g. running a python script or running a simulation on software like Continuity or Browndye), then exit from your ssh connection (or let your computer go to sleep), the process running your task will terminate and your job will not finish running.  You need to find a way to keep your remote SSH process running after disconnection.  You could disown the process using `&` or use one of the command line programs that enable this (tmux, screen, nohup).  I typically use tmux (short for terminal multiplexer) but use whichever method works best for you. I never remember the syntax so I have have a cheatsheet of the useful commands (e.g. https://tmuxcheatsheet.com/).
@@ -121,11 +149,19 @@ The model we have selected for this example runs very quickly, but that is unlik
 ```$ tmux a``` or ```$ tmux a -t mysession```
 
 ### Copy the result back using SCP
-To retrieve the output file, we reverse the source and destination of the `scp` command.
+Before we can retrieve the figures created from the simulation, we must exit the `ssh` connection.
 
-```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:~/output.txt local/path/.```
+```$  exit```
 
-The file is now back on your local machine for further analysis, visualization, etc. :tada:
+To retrieve the output file, we reverse the source and destination of the `scp` command.  First, end the `ssh` connection using 
+
+```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:AllBeats.png local/path/.```
+
+If you want to copy multiple files at a time, you can again use the wildcard charachter (`*`).  However, when using the wildcard with a remote host, you need to prefix it with a forward slash (`\`).
+
+```scp -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-54-71-22-234.us-west-2.compute.amazonaws.com/:\*.png local/path/.```
+
+The files are now back on your local machine for further analysis, visualization, etc. :tada:
 
 ### Running a script stored in an S3 bucket
 For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
