@@ -113,7 +113,7 @@ To run the python script, we need to `ssh` back into the ec2 instance and run it
 ```$ ssh -i "path/to/key/kpv-aws-key.pem" ec2-user@ec2-##-##-##-###.us-west-2.compute.amazonaws.com```
 
 ### Install Python 3 and dependancies on ec2 instance
-First we need to install Python 3 onto the ec2 instance.  Amazon Linux 2 uses the `yum` package manager.  Run the following four lines to install the needed software.
+First we need to install Python 3 onto the ec2 instance.  Amazon Linux 2 uses the `yum` package manager.  Run the following four lines to install the required software.
 
 ```$  sudo yum install python37```
 
