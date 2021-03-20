@@ -167,7 +167,21 @@ If you want to copy multiple files at a time, you can again use the wildcard cha
 The files are now back on your local machine for further analysis, visualization, etc. :tada:
 
 ### Running a script stored in an S3 bucket
-For an ec2 instance to access an S3 bucket, the instance requires an IAM role with sufficient priveldeges (https://aws.amazon.com/premiumsupport/knowledge-center/ec2-instance-access-s3-bucket/). Currently this is not possible with AWS access using your UCSD SSO account.  We are working to get this available.
+To copy data from an S3 bucket to your EC2 instance, you need to provide the EC2 instance with an IAM role when creating the instance.  The proper IAM role is `EC2-S3-access`. You can also attach IAM roles through the console if you've alread launched the instance.
+
+<img width="650" alt="EC2InstanceS3permissions" src="https://user-images.githubusercontent.com/21269613/111859719-1f1e0b00-8900-11eb-9705-ac71b37cb3c1.png">
+
+The following link has instructions for copying a file from a bucket to your EC2 isntance. https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonS3.html. Ideally, the AWS CLI could be used to copy data from the s3 instance.  However, as mentioned previously, UCSD's AWS console access method does not allow for AWS CLI access.  The other option is to use the terminal command `wget`.  The syntax is as follows:
+
+```$ wget https://my_bucket.s3.amazonaws.com/path-to-file```
+
+To grab the two python files from S3 instead of using `scp` from your local machine, we could have used the following command.
+
+```$ wget https://kevincent-bucket.s3.amazonaws.com/*.py``` 
+
+Currently, we are still getting an error with this method - `HTTP request sent, awaiting response... 403 Forbidden` Some troubleshooting options are available here: https://aws.amazon.com/premiumsupport/knowledge-center/s3-403-forbidden-error/
+
+I am not confident this method will work great for very large files/databases. I think there must be a better method for that, but I haven't dug into it.  Here is a link with details on how to speed up your data transfer if that is a major issue (https://aws.amazon.com/premiumsupport/knowledge-center/s3-transfer-data-bucket-instance/).
 
 ## Terminating an EC2 instance
 The final step is to shut down or terminate the ec2 instance. *Terminating the instance is very important as you will keep incuring charges until your instance is terminated!* Remember to be extra careful to terminate an instance if it is using an expensive instance type.
